@@ -93,9 +93,8 @@ public class MainActivity extends AppCompatActivity {
         boolean test = editor.GetBoolean("firstLaunch");
         if(test)
             return;
-        Toast.makeText(this, "app is launched for the first time", Toast.LENGTH_SHORT).show();
         startActivity(new Intent(MainActivity.this, FirstLaunch.class));
-        //editor.WriteBoolean("firstLaunch", true);
+        editor.WriteBoolean("firstLaunch", true);
     }
 
 

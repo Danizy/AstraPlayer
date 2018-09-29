@@ -44,9 +44,9 @@ public class DirectoryBrowserAdapter extends RecyclerView.Adapter<DirectoryBrows
 
         public ViewHolder(View v) {
             super(v);
-            name = (TextView) v.findViewById(R.id.name);
-            checkbox = (CheckBox) v.findViewById(R.id.checkBox);
-            img = (ImageView) v.findViewById(R.id.imageView);
+            name = v.findViewById(R.id.name);
+            checkbox = v.findViewById(R.id.checkBox);
+            img = v.findViewById(R.id.imageView);
 
             v.setOnClickListener(this);
             checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -54,14 +54,10 @@ public class DirectoryBrowserAdapter extends RecyclerView.Adapter<DirectoryBrows
                 public void onCheckedChanged(CompoundButton buttonView,
                                              boolean isChecked) {
                     if (isChecked) {
-                        Toast.makeText(DirectoryBrowserAdapter.this.context,
-                                "Added folder " + name.getText(),
-                                Toast.LENGTH_SHORT).show();
+                        checkedDirectories.add(new MyDirectory (name.getText().toString(), directory));
                         mListener.Add(new MyDirectory(name.getText().toString(), directory));
                     } else {
-                        Toast.makeText(DirectoryBrowserAdapter.this.context,
-                                "Removed folder " + name.getText(),
-                                Toast.LENGTH_SHORT).show();
+                        checkedDirectories.remove(new MyDirectory(name.getText().toString(), directory));
                         mListener.Del(new MyDirectory(name.getText().toString(), directory));
                     }
                 }

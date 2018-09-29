@@ -102,7 +102,7 @@ public class LocalFoldersFragment extends Fragment implements DirectoryBrowserAd
 
 
 
-        //RecyclerView adapater
+
         DirectoryBrowserAdapter recyclerViewAdapter = new
                 DirectoryBrowserAdapter(list,localDirectories, getActivity(), this);
         folderRecyclerView.setAdapter(recyclerViewAdapter);
