@@ -58,4 +58,24 @@ public class FolderBrowser {
         }
     }
 
+    public List<MyFile> getFiles(String Location){
+        try{
+            File directory = new File(Location);
+            File[] files = directory.listFiles();
+            List<MyFile> fileList = new ArrayList<MyFile>();
+            if(files == null || files.length == 0)
+                return null;
+            for(File infile : files){
+                if(infile.isFile()){
+                    fileList.add(new MyFile(infile.getName(), infile.getAbsolutePath()));
+                }
+            }
+            return fileList;
+        }catch (Exception e){
+            return null;
+        }
+
+
+    }
+
 }

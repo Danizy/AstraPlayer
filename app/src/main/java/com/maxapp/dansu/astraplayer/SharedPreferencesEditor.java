@@ -3,6 +3,7 @@ package com.maxapp.dansu.astraplayer;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -24,7 +25,7 @@ public class SharedPreferencesEditor {
     }
 
     public void WriteBoolean(String pref, Boolean val){
-        SharedPreferences sharedPref = act.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(act);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putBoolean(pref, val);
         editor.commit();
@@ -32,12 +33,12 @@ public class SharedPreferencesEditor {
 
 
     public boolean GetBoolean(String pref){
-        SharedPreferences sharedPref = act.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(act);
         return sharedPref.getBoolean(pref, false);
     }
 
     public void WriteStringList(List<String> list, String tag){
-        SharedPreferences sharedPref = act.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(act);
         SharedPreferences.Editor editor = sharedPref.edit();
         Gson gson = new Gson();
 
@@ -47,7 +48,7 @@ public class SharedPreferencesEditor {
     }
 
     public List<String> ReadStringList(String tag){
-        SharedPreferences sharedPref = act.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(act);
         String json = sharedPref.getString(tag, null);
         Gson gson = new Gson();
         Type type = new TypeToken<List<String>>() {}.getType();
@@ -56,7 +57,7 @@ public class SharedPreferencesEditor {
     }
 
     public void WriteDirectories(List<MyDirectory> list, String tag){
-        SharedPreferences sharedPref = act.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(act);
         SharedPreferences.Editor editor = sharedPref.edit();
         Gson gson = new Gson();
 
@@ -66,7 +67,7 @@ public class SharedPreferencesEditor {
     }
 
     public List<MyDirectory> ReadDirectories(String tag){
-        SharedPreferences sharedPref = act.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(act);
         String json = sharedPref.getString(tag, null);
         Gson gson = new Gson();
         Type type = new TypeToken<List<MyDirectory>>() {}.getType();

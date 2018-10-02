@@ -24,6 +24,7 @@
             android:name=".folder_browser_activity.FolderBrowserActivity"
             android:label="@string/title_activity_folder_browser"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <service android:name=".MusicService.MusicService"/>
     </application>
 
 </manifest>

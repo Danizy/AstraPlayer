@@ -1,5 +1,7 @@
 package com.maxapp.dansu.astraplayer.folder_browser_activity;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
 import android.support.design.widget.TabItem;
@@ -49,11 +51,16 @@ public class FolderBrowserActivity extends AppCompatActivity implements LocalFol
     SharedPreferencesEditor sp;
     Boolean isSDPresent = android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED);
     private int tabs = 1;
+    Intent returnIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_folder_browser);
+
+        returnIntent = new Intent();
+
+        setResult(Activity.RESULT_CANCELED, returnIntent);
 
 
         // Create the adapter that will return a fragment for each of the three
@@ -61,7 +68,7 @@ public class FolderBrowserActivity extends AppCompatActivity implements LocalFol
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager = findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         sp = new SharedPreferencesEditor(this);
 
@@ -73,7 +80,7 @@ public class FolderBrowserActivity extends AppCompatActivity implements LocalFol
         if(sdDirectories == null)
             sdDirectories = new ArrayList<>();
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        TabLayout tabLayout = findViewById(R.id.tabs);
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
@@ -87,12 +94,13 @@ public class FolderBrowserActivity extends AppCompatActivity implements LocalFol
 
                 sp.WriteDirectories(localDirectories, "localDirectories");
                 sp.WriteDirectories(sdDirectories, "sdDirectories");
+                setResult(Activity.RESULT_OK, returnIntent);
+                finish();
 
             }
         });
 
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
