@@ -29,14 +29,33 @@ public class DataHolder {
     }
 
     public void refresh(){
-        directories = SPEditor.ReadDirectories("localDirectories");
-        directories.addAll(SPEditor.ReadDirectories("sdDirectories"));
+        try {
+            directories = SPEditor.ReadDirectories("localDirectories");
+        }
+        catch (Exception e){
+            directories = new ArrayList<MyDirectory>();
+        }
+
+        try {
+            directories.addAll(SPEditor.ReadDirectories("sdDirectories"));
+        }
+        catch (Exception e){
+
+        }
         currentSong = 0;
         currentFolder = 0;
-        files = Fb.getFiles(directories.get(0).directory);
+        if(directories != null && directories.size() != 0)
+            files = Fb.getFiles(directories.get(0).directory);
     }
 
-    public MyFile getCurrentSong(){return files.get(currentSong);}
+    public MyFile getCurrentSong(){
+        try {
+            return files.get(currentSong);
+        }
+        catch (Exception e){
+            return null;
+        }
+    }
 
     public MyFile getSong(int id){
         if(id < 0 || id > files.size() - 1)
@@ -45,6 +64,8 @@ public class DataHolder {
     }
 
     public MyFile getNextSong(){
+        if(files == null || files.size() == 0)
+            return null;
         currentSong++;
         if(currentSong > files.size() - 1)
             currentSong = 0;
@@ -53,6 +74,8 @@ public class DataHolder {
     }
 
     public MyFile getPreviousSong(){
+        if(files == null || files.size() == 0)
+            return null;
         currentSong--;
         if(currentSong < 0)
             currentSong = files.size() - 1;
@@ -60,17 +83,21 @@ public class DataHolder {
     }
 
     public MyFile getNextFolderSong(){
+        if(directories == null || directories.size() == 0)
+            return null;
         currentFolder++;
         currentSong = 0;
         if(currentFolder > directories.size() - 1)
             currentFolder = 0;
         files = Fb.getFiles(directories.get(currentFolder).directory);
-        if(files.size() == 0)
+        if(files == null || files.size() == 0)
             return null;
         return files.get(currentSong);
     }
 
     public MyFile getPreviousFolderSong(){
+        if(directories == null || directories.size() == 0)
+            return null;
         currentFolder--;
         currentSong = 0;
         if(currentFolder < 0)

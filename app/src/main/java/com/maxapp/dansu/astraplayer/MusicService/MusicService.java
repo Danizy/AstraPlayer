@@ -15,6 +15,7 @@ import java.io.IOException;
 public class MusicService extends Service {
     private final IBinder mBinder = new LocalBinder();
     private Boolean Playing = false;
+    private Boolean mediaPlayerReady = false;
     MediaPlayer mediaPlayer = new MediaPlayer();
 
     public class LocalBinder extends Binder{
@@ -31,24 +32,29 @@ public class MusicService extends Service {
     }
 
     public void SetSong(MyFile song){
+        if(song == null)
+            return;
         try {
             mediaPlayer.stop();
             mediaPlayer.reset();
             mediaPlayer.setDataSource(this, Uri.parse(song.location));
             mediaPlayer.prepare();
+            mediaPlayerReady = true;
             mediaPlayer.start();
             Playing = true;
         } catch (IOException e) {
             e.printStackTrace();
+            mediaPlayerReady = false;
         }
     }
 
     public void Play(){
+        if(mediaPlayerReady)
         mediaPlayer.start();
     }
 
-    public void Stop(){
-        mediaPlayer.stop();
+    public void Pause(){
+        mediaPlayer.pause();
         Playing = false;
     }
 

@@ -16,32 +16,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
-
 import com.maxapp.dansu.astraplayer.MusicService.DataHolder;
 import com.maxapp.dansu.astraplayer.MusicService.MusicService;
-import com.maxapp.dansu.astraplayer.folder_browser.FolderBrowser;
-import com.maxapp.dansu.astraplayer.folder_browser.MyDirectory;
-import com.maxapp.dansu.astraplayer.folder_browser.MyFile;
 import com.maxapp.dansu.astraplayer.folder_browser_activity.FolderBrowserActivity;
-
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private final int permission = 1;
-    private int songNumber = 0;
-    private int folderNumber = 0;
-    MusicService mService;
+    MusicService mService; //holder of music player
     boolean mBound = false;
-    DataHolder Dh;
+    DataHolder Dh; //music, folders, current song/folder
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Dh = new DataHolder(this);
-        Button playBtn = findViewById(R.id.PlayBtn);
 
         showPhoneStatePermission(); //Permission check
     }
@@ -72,14 +61,12 @@ public class MainActivity extends AppCompatActivity {
         if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                showExplanation("Permission Needed", "This app needs permission to read data on your phone", Manifest.permission.READ_EXTERNAL_STORAGE, permission);
+                showExplanation("Permission Needed", "This app needs permission to read data on your phone", Manifest.permission.READ_EXTERNAL_STORAGE, 1);
             } else {
-                requestPermission(Manifest.permission.READ_EXTERNAL_STORAGE, permission);
+                requestPermission(Manifest.permission.READ_EXTERNAL_STORAGE, 1);
             }
         } else {
-            //Toast.makeText(MainActivity.this, "Permission (already) Granted!", Toast.LENGTH_SHORT).show();
             checkFirstLaunch();
-            loadData();
         }
     }
 
@@ -89,13 +76,11 @@ public class MainActivity extends AppCompatActivity {
             String permissions[],
             int[] grantResults) {
         switch (requestCode) {
-            case permission:
+            case 1:
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    //Toast.makeText(MainActivity.this, "Permission Granted!", Toast.LENGTH_SHORT).show();
                     checkFirstLaunch();
                 } else {
-                    //Toast.makeText(MainActivity.this, "Permission Denied!", Toast.LENGTH_SHORT).show();
                     finish();
                     System.exit(0);
                 }
@@ -129,8 +114,10 @@ public class MainActivity extends AppCompatActivity {
 
         SharedPreferencesEditor editor = new SharedPreferencesEditor(this);
         boolean test = editor.GetBoolean("firstLaunch");
-        if(test)
+        if(test){
+            loadData();
             return;
+        }
         startActivity(new Intent(MainActivity.this, FirstLaunch.class));
         editor.WriteBoolean("firstLaunch", true);
     }
@@ -170,7 +157,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void NextSong(View v){
-        songNumber ++;
         mService.SetSong(Dh.getNextSong());
     }
 
@@ -199,9 +185,6 @@ public class MainActivity extends AppCompatActivity {
                 Dh.refresh();
                 mService.SetSong(Dh.getCurrentSong());
             }
-            if (resultCode == Activity.RESULT_CANCELED) {
-                //Write your code if there's no result
-            }
         }
-    }//onActivityResult
+    }
 }
