@@ -25,7 +25,7 @@ import com.maxapp.dansu.astraplayer.MusicService.DataHolder;
 import com.maxapp.dansu.astraplayer.MusicService.MusicService;
 import com.maxapp.dansu.astraplayer.folder_browser_activity.FolderBrowserActivity;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
 
     MusicService mService; //holder of music player
     boolean mBound = false;
