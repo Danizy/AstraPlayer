@@ -10,14 +10,17 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.os.IBinder;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
+import android.widget.Toast;
+
 import com.maxapp.dansu.astraplayer.MusicService.DataHolder;
 import com.maxapp.dansu.astraplayer.MusicService.MusicService;
 import com.maxapp.dansu.astraplayer.folder_browser_activity.FolderBrowserActivity;
@@ -27,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
     MusicService mService; //holder of music player
     boolean mBound = false;
     DataHolder Dh; //music, folders, current song/folder
+    ConstraintLayout layout;
+    MotionDetector motion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +42,9 @@ public class MainActivity extends AppCompatActivity {
         window.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
         setContentView(R.layout.activity_main);
         Dh = new DataHolder(this);
+        motion = new MotionDetector();
+
+
 
         showPhoneStatePermission(); //Permission check
     }
@@ -155,9 +163,34 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void OnBtnClick(View v){
+    ///////////////////////////////////////////////////////////////// TOUCH EVENTS
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        String action = motion.move(event);
+        if(action == "left"){
+            NextSong(this.findViewById(R.id.main_content));
+        }
+        else if(action == "right"){
+            PreviousSong(this.findViewById(R.id.main_content));
+        }
+        else if(action == "down"){
+            PreviousFolder(this.findViewById(R.id.main_content));
+        }
+        else if(action == "up"){
+            NextFolder(this.findViewById(R.id.main_content));
+        }
+        else if(action == "doubleTap"){
+            PlayPause(this.findViewById(R.id.main_content));
+        }
+        return super.onTouchEvent(event);
+    }
+
+    public void PlayPause(View v){
         if(mBound){
-            mService.Play();
+            if(mService.isPlaying())
+                mService.Pause();
+            else
+                mService.Play();
         }
 
     }

@@ -103,7 +103,7 @@ public class DataHolder {
         if(currentFolder < 0)
             currentFolder = directories.size() - 1;
         files = Fb.getFiles(directories.get(currentFolder).directory);
-        if(files.size() == 0)
+        if(files == null || files.size() == 0)
             return null;
         return files.get(currentSong);
     }

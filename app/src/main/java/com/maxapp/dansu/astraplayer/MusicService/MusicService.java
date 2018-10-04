@@ -35,7 +35,8 @@ public class MusicService extends Service {
         if(song == null)
             return;
         try {
-            mediaPlayer.stop();
+            if(Playing)
+                mediaPlayer.stop();
             mediaPlayer.reset();
             mediaPlayer.setDataSource(this, Uri.parse(song.location));
             mediaPlayer.prepare();
@@ -49,8 +50,11 @@ public class MusicService extends Service {
     }
 
     public void Play(){
-        if(mediaPlayerReady)
-        mediaPlayer.start();
+        if(mediaPlayerReady){
+            mediaPlayer.start();
+            Playing = true;
+        }
+
     }
 
     public void Pause(){
