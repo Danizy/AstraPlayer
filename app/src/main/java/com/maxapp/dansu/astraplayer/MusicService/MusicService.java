@@ -31,6 +31,8 @@ public class MusicService extends Service {
         return mBinder;
     }
 
+
+
     public void SetSong(MyFile song){
         if(song == null)
             return;

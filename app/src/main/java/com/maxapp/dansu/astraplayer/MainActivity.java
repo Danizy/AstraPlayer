@@ -41,11 +41,9 @@ public class MainActivity extends Activity {
         window.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
         window.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
         setContentView(R.layout.activity_main);
+        startService(new Intent(this, MusicService.class));
         Dh = new DataHolder(this);
         motion = new MotionDetector();
-
-
-
         showPhoneStatePermission(); //Permission check
     }
 
@@ -151,6 +149,7 @@ public class MainActivity extends Activity {
         @Override
         public void onServiceDisconnected(ComponentName componentName) {
             mBound = false;
+            mService = null;
         }
     };
 
