@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
+import android.os.Handler;
 import android.os.IBinder;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.ActivityCompat;
@@ -19,6 +20,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.maxapp.dansu.astraplayer.MusicService.DataHolder;
@@ -32,6 +34,7 @@ public class MainActivity extends Activity {
     DataHolder Dh; //music, folders, current song/folder
     ConstraintLayout layout;
     MotionDetector motion;
+    SeekBar mSeekBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +48,7 @@ public class MainActivity extends Activity {
         Dh = new DataHolder(this);
         motion = new MotionDetector();
         showPhoneStatePermission(); //Permission check
+        mSeekBar = findViewById(R.id.seekBar);
     }
 
     @Override
@@ -55,7 +59,39 @@ public class MainActivity extends Activity {
             bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
         }
 
+        final Handler mHandler = new Handler();
+        MainActivity.this.runOnUiThread(new Runnable() {
 
+            @Override
+            public void run() {
+                if(mBound){
+                    int mCurrentPosition = mService.getCurrentPosition();
+                    mSeekBar.setProgress(mCurrentPosition);
+                }
+                mHandler.postDelayed(this, 1000);
+            }
+        });
+
+        mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                // TODO Auto-generated method stub
+                if(fromUser)
+                    mService.setPosition(progress);
+
+            }
+        });
     }
 
     @Override
@@ -142,8 +178,12 @@ public class MainActivity extends Activity {
             MusicService.LocalBinder binder = (MusicService.LocalBinder) service;
             mService = binder.getService();
             mBound = true;
-            if(!mService.isPlaying())
+            if(!mService.isPlaying()){
                 mService.SetSong(Dh.getCurrentSong());
+                mService.Pause();
+            }
+            mSeekBar.setMax(mService.getDuration());
+
         }
 
         @Override
@@ -196,18 +236,22 @@ public class MainActivity extends Activity {
 
     public void NextSong(View v){
         mService.SetSong(Dh.getNextSong());
+        mSeekBar.setMax(mService.getDuration());
     }
 
     public void PreviousSong(View v){
         mService.SetSong(Dh.getPreviousSong());
+        mSeekBar.setMax(mService.getDuration());
     }
 
     public void PreviousFolder(View v){
         mService.SetSong(Dh.getPreviousFolderSong());
+        mSeekBar.setMax(mService.getDuration());
     }
 
     public void NextFolder(View v){
         mService.SetSong(Dh.getNextFolderSong());
+        mSeekBar.setMax(mService.getDuration());
     }
 
     public void Browse(View v){
@@ -225,4 +269,5 @@ public class MainActivity extends Activity {
             }
         }
     }
+
 }

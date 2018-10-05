@@ -68,5 +68,17 @@ public class MusicService extends Service {
         return Playing;
     }
 
+    public int getDuration(){
+        return mediaPlayer.getDuration();
+    }
+
+    public int getCurrentPosition(){
+        return mediaPlayer.getCurrentPosition();
+    }
+
+    public void setPosition(int position){
+        mediaPlayer.seekTo(position);
+    }
+
 
 }
