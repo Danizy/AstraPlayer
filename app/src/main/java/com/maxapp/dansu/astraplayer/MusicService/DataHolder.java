@@ -107,4 +107,12 @@ public class DataHolder {
             return null;
         return files.get(currentSong);
     }
+
+    public String getSongName(){
+        return getCurrentSong().name;
+    }
+
+    public String getFolderName(){
+        return directories.get(currentFolder).name;
+    }
 }

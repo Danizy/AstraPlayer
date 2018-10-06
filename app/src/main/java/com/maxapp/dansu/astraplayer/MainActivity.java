@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.maxapp.dansu.astraplayer.MusicService.DataHolder;
@@ -35,6 +36,8 @@ public class MainActivity extends Activity {
     ConstraintLayout layout;
     MotionDetector motion;
     SeekBar mSeekBar;
+    TextView TitleTextVIew;
+    TextView FolderTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +52,8 @@ public class MainActivity extends Activity {
         motion = new MotionDetector();
         showPhoneStatePermission(); //Permission check
         mSeekBar = findViewById(R.id.seekBar);
+        TitleTextVIew = findViewById(R.id.TitleTextView);
+        FolderTextView = findViewById(R.id.FolderTextView);
     }
 
     @Override
@@ -57,6 +62,10 @@ public class MainActivity extends Activity {
         if(!mBound){
             Intent intent = new Intent(this, MusicService.class);
             bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+        }
+        else{
+            TitleTextVIew.setText(Dh.getSongName());
+            FolderTextView.setText(Dh.getFolderName());
         }
 
         final Handler mHandler = new Handler();
@@ -91,7 +100,7 @@ public class MainActivity extends Activity {
                     mService.setPosition(progress);
 
             }
-        });
+        }); //Seekbar control
     }
 
     @Override
@@ -183,6 +192,8 @@ public class MainActivity extends Activity {
                 mService.Pause();
             }
             mSeekBar.setMax(mService.getDuration());
+            TitleTextVIew.setText(Dh.getSongName());
+            FolderTextView.setText(Dh.getFolderName());
 
         }
 
@@ -237,21 +248,27 @@ public class MainActivity extends Activity {
     public void NextSong(View v){
         mService.SetSong(Dh.getNextSong());
         mSeekBar.setMax(mService.getDuration());
+        TitleTextVIew.setText(Dh.getSongName());
     }
 
     public void PreviousSong(View v){
         mService.SetSong(Dh.getPreviousSong());
         mSeekBar.setMax(mService.getDuration());
+        TitleTextVIew.setText(Dh.getSongName());
     }
 
     public void PreviousFolder(View v){
         mService.SetSong(Dh.getPreviousFolderSong());
         mSeekBar.setMax(mService.getDuration());
+        TitleTextVIew.setText(Dh.getSongName());
+        FolderTextView.setText(Dh.getFolderName());
     }
 
     public void NextFolder(View v){
         mService.SetSong(Dh.getNextFolderSong());
         mSeekBar.setMax(mService.getDuration());
+        TitleTextVIew.setText(Dh.getSongName());
+        FolderTextView.setText(Dh.getFolderName());
     }
 
     public void Browse(View v){
