@@ -20,6 +20,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,6 +40,8 @@ public class MainActivity extends Activity {
     SeekBar mSeekBar;
     TextView TitleTextVIew;
     TextView FolderTextView;
+    ImageView imgView;
+    ImageAnimator imageAnimator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +58,9 @@ public class MainActivity extends Activity {
         mSeekBar = findViewById(R.id.seekBar);
         TitleTextVIew = findViewById(R.id.TitleTextView);
         FolderTextView = findViewById(R.id.FolderTextView);
+        imgView = findViewById(R.id.imageView2);
+        ConstraintLayout.LayoutParams lp = (ConstraintLayout.LayoutParams) imgView.getLayoutParams();
+        imageAnimator = new ImageAnimator(lp.leftMargin, lp.topMargin);
     }
 
     @Override
@@ -232,6 +239,9 @@ public class MainActivity extends Activity {
         else if(action == "doubleTap"){
             PlayPause(this.findViewById(R.id.main_content));
         }
+
+        imageAnimator.animate(event, imgView);
+
         return super.onTouchEvent(event);
     }
 
