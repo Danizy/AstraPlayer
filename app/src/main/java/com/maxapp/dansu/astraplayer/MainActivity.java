@@ -226,15 +226,20 @@ public class MainActivity extends Activity {
         String action = motion.move(event);
         if(action == "left"){
             NextSong(this.findViewById(R.id.main_content));
+            imageAnimator.animateLeft(this, imgView);
         }
         else if(action == "right"){
             PreviousSong(this.findViewById(R.id.main_content));
+            imageAnimator.animateRight(this, imgView);
         }
         else if(action == "down"){
             PreviousFolder(this.findViewById(R.id.main_content));
+            imageAnimator.animateDown(this, imgView);
         }
         else if(action == "up"){
             NextFolder(this.findViewById(R.id.main_content));
+            imageAnimator.animateUp(this, imgView);
+
         }
         else if(action == "doubleTap"){
             PlayPause(this.findViewById(R.id.main_content));
