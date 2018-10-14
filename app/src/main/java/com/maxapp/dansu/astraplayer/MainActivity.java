@@ -60,7 +60,7 @@ public class MainActivity extends Activity {
         FolderTextView = findViewById(R.id.FolderTextView);
         imgView = findViewById(R.id.imageView2);
         ConstraintLayout.LayoutParams lp = (ConstraintLayout.LayoutParams) imgView.getLayoutParams();
-        imageAnimator = new ImageAnimator(lp.leftMargin, lp.topMargin);
+        imageAnimator = new ImageAnimator(lp.leftMargin, lp.topMargin, Dh);
     }
 
     @Override

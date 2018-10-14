@@ -9,14 +9,18 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.Transformation;
 import android.widget.ImageView;
 
+import com.maxapp.dansu.astraplayer.MusicService.DataHolder;
+
 public class ImageAnimator {
     private int startx;
     private int starty;
     private int imgDefaultX;
     private int imgDefaultY;
-    public ImageAnimator(int defX, int defY){
+    private DataHolder dh;
+    public ImageAnimator(int defX, int defY, DataHolder dh){
         imgDefaultX = defX;
         imgDefaultY = defY;
+        this.dh = dh;
     }
 
     public void animate(MotionEvent event, final ImageView imgView){
@@ -40,29 +44,6 @@ public class ImageAnimator {
                 imgView.setLayoutParams(mParams);
                 break;
 
-            /*case MotionEvent.ACTION_UP:
-
-                ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) imgView.getLayoutParams();
-                final int deltaY = imgDefaultY - params.topMargin;
-                final int topMargin = params.topMargin;
-                final int deltaX = imgDefaultX - params.leftMargin;
-                final int leftMargin = params.leftMargin;
-
-                Animation a = new Animation() {
-
-                    @Override
-                    protected void applyTransformation(float interpolatedTime, Transformation t) {
-                        ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) imgView.getLayoutParams();
-                            params.topMargin = (int)(topMargin + (deltaY * interpolatedTime));
-                                params.leftMargin = (int)(leftMargin + (deltaX * interpolatedTime));
-                        imgView.setLayoutParams(params);
-                    }
-                };
-                a.setDuration(500); // in ms
-                imgView.startAnimation(a);
-
-
-                break;*/
             default:
                 break;
         }
@@ -168,6 +149,7 @@ public class ImageAnimator {
                 params.bottomMargin = 0;
                 imgView.setLayoutParams(params);
                 imgView.startAnimation(AnimationUtils.loadAnimation(ctx, R.anim.fade_in));
+                imgView.setImageBitmap(dh.getSongImage());
             }
         }, 300);
     }

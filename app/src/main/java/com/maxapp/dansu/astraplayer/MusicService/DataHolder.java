@@ -1,6 +1,10 @@
 package com.maxapp.dansu.astraplayer.MusicService;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.MediaMetadataRetriever;
+import android.net.Uri;
 
 import com.maxapp.dansu.astraplayer.SharedPreferencesEditor;
 import com.maxapp.dansu.astraplayer.folder_browser.FolderBrowser;
@@ -114,5 +118,21 @@ public class DataHolder {
 
     public String getFolderName(){
         return directories.get(currentFolder).name;
+    }
+
+    public Bitmap getSongImage(){
+        MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+        byte[] rawArt;
+        BitmapFactory.Options bfo=new BitmapFactory.Options();
+
+        mmr.setDataSource(act, Uri.parse(getCurrentSong().location));
+        rawArt = mmr.getEmbeddedPicture();
+
+
+        if (null != rawArt)
+            return BitmapFactory.decodeByteArray(rawArt, 0, rawArt.length, bfo);
+        return null;
+
+
     }
 }
