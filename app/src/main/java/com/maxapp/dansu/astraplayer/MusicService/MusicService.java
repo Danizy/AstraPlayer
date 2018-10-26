@@ -80,5 +80,9 @@ public class MusicService extends Service {
         mediaPlayer.seekTo(position);
     }
 
+    public Boolean isMediaPlayerReady(){
+        return mediaPlayerReady;
+    }
+
 
 }

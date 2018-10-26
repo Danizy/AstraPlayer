@@ -198,9 +198,12 @@ public class MainActivity extends Activity {
                 mService.SetSong(Dh.getCurrentSong());
                 mService.Pause();
             }
-            mSeekBar.setMax(mService.getDuration());
-            TitleTextVIew.setText(Dh.getSongName());
-            FolderTextView.setText(Dh.getFolderName());
+            if(mService.isMediaPlayerReady()){
+                mSeekBar.setMax(mService.getDuration());
+                TitleTextVIew.setText(Dh.getSongName());
+                FolderTextView.setText(Dh.getFolderName());
+            }
+
 
         }
 

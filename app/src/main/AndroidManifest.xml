@@ -19,12 +19,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".FirstLaunch" android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".FirstLaunch"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".folder_browser_activity.FolderBrowserActivity"
             android:label="@string/title_activity_folder_browser"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <service android:name=".MusicService.MusicService"/>
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <service android:name=".MusicService.MusicService" />
+
     </application>
 
 </manifest>

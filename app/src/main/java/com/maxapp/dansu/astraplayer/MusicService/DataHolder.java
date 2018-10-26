@@ -113,6 +113,8 @@ public class DataHolder {
     }
 
     public String getSongName(){
+        if(files == null || files.size() == 0)
+            return "";
         return getCurrentSong().name;
     }
 
@@ -125,12 +127,21 @@ public class DataHolder {
         byte[] rawArt;
         BitmapFactory.Options bfo=new BitmapFactory.Options();
 
+        if(getCurrentSong() == null)
+            return null;
         mmr.setDataSource(act, Uri.parse(getCurrentSong().location));
         rawArt = mmr.getEmbeddedPicture();
 
 
-        if (null != rawArt)
-            return BitmapFactory.decodeByteArray(rawArt, 0, rawArt.length, bfo);
+
+
+
+        if (null != rawArt){
+            Bitmap tmpBitMap = BitmapFactory.decodeByteArray(rawArt, 0, rawArt.length, bfo);
+            return Bitmap.createScaledBitmap(
+                    tmpBitMap, 550, 730, false);
+        }
+
         return null;
 
 
