@@ -132,10 +132,6 @@ public class DataHolder {
         mmr.setDataSource(act, Uri.parse(getCurrentSong().location));
         rawArt = mmr.getEmbeddedPicture();
 
-
-
-
-
         if (null != rawArt){
             Bitmap tmpBitMap = BitmapFactory.decodeByteArray(rawArt, 0, rawArt.length, bfo);
             return Bitmap.createScaledBitmap(
@@ -145,5 +141,11 @@ public class DataHolder {
         return null;
 
 
+    }
+
+    public void setFolderAndSong(int folder, int song){
+        currentFolder = folder;
+        files = Fb.getFiles(directories.get(currentFolder).directory);
+        currentSong = song;
     }
 }

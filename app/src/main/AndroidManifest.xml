@@ -29,6 +29,8 @@
 
         <service android:name=".MusicService.MusicService" />
 
+        <activity android:name=".song_browser_activity.FavLocations" />
+        <activity android:name=".song_browser_activity.FavSong"></activity>
     </application>
 
 </manifest>

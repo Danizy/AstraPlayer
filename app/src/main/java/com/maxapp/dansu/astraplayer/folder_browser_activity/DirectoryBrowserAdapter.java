@@ -87,12 +87,6 @@ public class DirectoryBrowserAdapter extends RecyclerView.Adapter<DirectoryBrows
         holder.directory = folders.get(position).directory;
         if(checkedDirectories.contains(folder))
             holder.checkbox.setChecked(true);
-
-
-
-
-
-
     }
 
     @Override

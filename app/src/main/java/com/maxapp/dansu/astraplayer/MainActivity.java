@@ -29,6 +29,7 @@ import android.widget.Toast;
 import com.maxapp.dansu.astraplayer.MusicService.DataHolder;
 import com.maxapp.dansu.astraplayer.MusicService.MusicService;
 import com.maxapp.dansu.astraplayer.folder_browser_activity.FolderBrowserActivity;
+import com.maxapp.dansu.astraplayer.song_browser_activity.FavLocations;
 
 public class MainActivity extends Activity {
 
@@ -71,6 +72,12 @@ public class MainActivity extends Activity {
             bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
         }
         else{
+
+
+            //if(getIntent().getIntExtra("song", 9999) != 9999){
+            //    Dh.setFolderAndSong(getIntent().getIntExtra("folder", 0), getIntent().getIntExtra("song", 0));
+            //}
+
             TitleTextVIew.setText(Dh.getSongName());
             FolderTextView.setText(Dh.getFolderName());
         }
@@ -87,6 +94,8 @@ public class MainActivity extends Activity {
                 mHandler.postDelayed(this, 1000);
             }
         });
+
+
 
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
@@ -115,6 +124,20 @@ public class MainActivity extends Activity {
         super.onDestroy();
         unbindService(mConnection);
         mBound = false;
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        // TODO Auto-generated method stub
+        super.onNewIntent(intent);
+
+        Bundle extras = intent.getExtras();
+        int a = extras.getInt("song", 9999);
+        int b = extras.getInt("folder", 9999);
+        Dh.setFolderAndSong(b, a);
+        TitleTextVIew.setText(Dh.getSongName());
+        FolderTextView.setText(Dh.getFolderName());
+        imgView.setImageBitmap(Dh.getSongImage());
     }
 
 
@@ -290,7 +313,8 @@ public class MainActivity extends Activity {
     }
 
     public void Browse(View v){
-        startActivityForResult(new Intent(MainActivity.this, FolderBrowserActivity.class), 1);
+        //startActivityForResult(new Intent(MainActivity.this, FolderBrowserActivity.class), 1);
+        startActivityForResult(new Intent(MainActivity.this, FavLocations.class), 1);
     }
 
 
