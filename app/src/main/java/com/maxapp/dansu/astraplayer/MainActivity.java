@@ -127,6 +127,26 @@ public class MainActivity extends Activity {
     }
 
     @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+
+        savedInstanceState.putInt("currentFolder", Dh.getFolderId());
+        savedInstanceState.putInt("currentSong", Dh.getSongId());
+
+        // etc.
+
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+
+        super.onRestoreInstanceState(savedInstanceState);
+
+        Dh.setFolderAndSong(savedInstanceState.getInt("currentFolder"), savedInstanceState.getInt("currentSong"));
+        imgView.setImageBitmap(Dh.getSongImage());
+    }
+
+    @Override
     protected void onNewIntent(Intent intent) {
         // TODO Auto-generated method stub
         super.onNewIntent(intent);

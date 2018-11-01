@@ -148,4 +148,12 @@ public class DataHolder {
         files = Fb.getFiles(directories.get(currentFolder).directory);
         currentSong = song;
     }
+
+    public int getSongId(){
+        return currentSong;
+    }
+
+    public int getFolderId(){
+        return currentFolder;
+    }
 }

@@ -15,7 +15,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:textAlignment="center"
-        android:gravity=""
+        android:gravity="center"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/seekBar"
         app:layout_constraintEnd_toEndOf="parent"
@@ -29,6 +29,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:textAlignment="center"
+        android:gravity="center"
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/TitleTextView"
         app:layout_constraintEnd_toEndOf="parent"
@@ -44,6 +45,21 @@
         android:src="@android:drawable/ic_dialog_dialer"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imageView2"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginBottom="68dp"
+        android:layout_marginEnd="52dp"
+        android:layout_marginStart="56dp"
+        android:layout_marginTop="88dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/folder"
+        app:layout_constraintBottom_toTopOf="@+id/FolderTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <SeekBar
         android:id="@+id/seekBar"
