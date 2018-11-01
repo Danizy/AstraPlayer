@@ -21,31 +21,30 @@ public class StorageOptions {
 
         List<String> results = new ArrayList<>();
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) { //Method 1 for KitKat & above
-            File[] externalDirs = context.getExternalFilesDirs(null);
+        //Method 1 for KitKat & above
+        File[] externalDirs = context.getExternalFilesDirs(null);
 
-            for (File file : externalDirs) {
-                String path = file.getPath().split("/Android")[0];
+        for (File file : externalDirs) {
+            String path = file.getPath().split("/Android")[0];
 
-                boolean addPath = false;
+            boolean addPath;
 
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    addPath = Environment.isExternalStorageRemovable(file);
-                }
-                else{
-                    addPath = Environment.MEDIA_MOUNTED.equals(EnvironmentCompat.getStorageState(file));
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                addPath = Environment.isExternalStorageRemovable(file);
+            }
+            else{
+                addPath = Environment.MEDIA_MOUNTED.equals(EnvironmentCompat.getStorageState(file));
 
-                }
+            }
 
-                if(addPath){
-                    results.add(path);
-                }
+            if(addPath){
+                results.add(path);
             }
         }
 
         if(results.isEmpty()) { //Method 2 for all versions
             // better variation of: http://stackoverflow.com/a/40123073/5002496
-            String output = "";
+            StringBuilder output = new StringBuilder();
             try {
                 final Process process = new ProcessBuilder().command("mount | grep /dev/block/vold")
                         .redirectErrorStream(true).start();
@@ -53,14 +52,14 @@ public class StorageOptions {
                 final InputStream is = process.getInputStream();
                 final byte[] buffer = new byte[1024];
                 while (is.read(buffer) != -1) {
-                    output = output + new String(buffer);
+                    output.append(new String(buffer));
                 }
                 is.close();
             } catch (final Exception e) {
                 e.printStackTrace();
             }
-            if(!output.trim().isEmpty()) {
-                String devicePoints[] = output.split("\n");
+            if(!output.toString().trim().isEmpty()) {
+                String devicePoints[] = output.toString().split("\n");
                 for(String voldPoint: devicePoints) {
                     results.add(voldPoint.split(" ")[2]);
                 }

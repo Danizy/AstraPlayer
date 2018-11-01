@@ -2,13 +2,12 @@ package com.maxapp.dansu.astraplayer.folder_browser;
 
 import android.content.Context;
 import android.os.Environment;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FolderBrowser {
-    Context context;
+    private Context context;
 
     public FolderBrowser(Context ctx){
         this.context = ctx;
@@ -18,7 +17,7 @@ public class FolderBrowser {
     public List<MyDirectory> getLocalContent(){
         File directory = new File(Environment.getExternalStorageDirectory().toString());
         File[] files = directory.listFiles();
-        List<MyDirectory> localFolders = new ArrayList<MyDirectory>();
+        List<MyDirectory> localFolders = new ArrayList<>();
         if(files == null || files.length == 0)
             return null;
         for(File infile : files){
@@ -41,7 +40,7 @@ public class FolderBrowser {
                 return null;
             File directory = new File(StorageOptions.getExternalStorageDirectories(context)[0]);
             File[] files = directory.listFiles();
-            List<MyDirectory> sdFolders = new ArrayList<MyDirectory>();
+            List<MyDirectory> sdFolders = new ArrayList<>();
             if(files == null || files.length == 0)
                 return null;
             for(File infile : files){
@@ -62,7 +61,7 @@ public class FolderBrowser {
         try{
             File directory = new File(Location);
             File[] files = directory.listFiles();
-            List<MyFile> fileList = new ArrayList<MyFile>();
+            List<MyFile> fileList = new ArrayList<>();
             if(files == null || files.length == 0)
                 return null;
             for(File infile : files){

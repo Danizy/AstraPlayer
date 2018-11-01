@@ -1,6 +1,6 @@
 package com.maxapp.dansu.astraplayer;
 
-import android.util.Log;
+
 import android.view.MotionEvent;
 
 /**

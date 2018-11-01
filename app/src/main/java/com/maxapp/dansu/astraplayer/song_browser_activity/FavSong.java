@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-
 import com.maxapp.dansu.astraplayer.MainActivity;
 import com.maxapp.dansu.astraplayer.MusicService.MusicService;
 import com.maxapp.dansu.astraplayer.R;
@@ -17,7 +16,6 @@ import com.maxapp.dansu.astraplayer.SharedPreferencesEditor;
 import com.maxapp.dansu.astraplayer.folder_browser.FolderBrowser;
 import com.maxapp.dansu.astraplayer.folder_browser.MyDirectory;
 import com.maxapp.dansu.astraplayer.folder_browser.MyFile;
-
 import java.util.List;
 
 public class FavSong extends AppCompatActivity implements FavSongAdapter.FavSongListener {
@@ -32,7 +30,7 @@ public class FavSong extends AppCompatActivity implements FavSongAdapter.FavSong
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fav_song);
 
-        recycler = (RecyclerView) findViewById(R.id.favRecycler);
+        recycler = findViewById(R.id.favRecycler);
 
         LinearLayoutManager recyclerLayoutManager = new LinearLayoutManager(this);
         recycler.setLayoutManager(recyclerLayoutManager);
@@ -51,10 +49,6 @@ public class FavSong extends AppCompatActivity implements FavSongAdapter.FavSong
         FavSongAdapter adapter = new FavSongAdapter(files, getBaseContext(), this);
         recycler.setAdapter(adapter);
         bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
-
-
-
-
     }
 
     @Override
@@ -69,12 +63,6 @@ public class FavSong extends AppCompatActivity implements FavSongAdapter.FavSong
         public void onServiceConnected(ComponentName componentName, IBinder service) {
             MusicService.LocalBinder binder = (MusicService.LocalBinder) service;
             mService = binder.getService();
-
-            if(mService.isMediaPlayerReady()){
-
-            }
-
-
         }
 
         @Override

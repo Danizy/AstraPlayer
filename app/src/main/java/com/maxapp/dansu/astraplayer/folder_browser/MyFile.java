@@ -6,7 +6,7 @@ public class MyFile {
     public String name;
     public String location;
 
-    public MyFile(String name, String location){
+    MyFile(String name, String location){
         this.name = name;
         this.location = location;
     }

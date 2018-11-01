@@ -9,10 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.maxapp.dansu.astraplayer.R;
 import com.maxapp.dansu.astraplayer.folder_browser.MyDirectory;
-
 import java.util.List;
 
 
@@ -21,7 +19,7 @@ public class FavLocationAdapter extends RecyclerView.Adapter<FavLocationAdapter.
     private List<MyDirectory> folders;
     private Context ctx;
 
-    public FavLocationAdapter(List<MyDirectory> directories, Context ctx){
+    FavLocationAdapter(List<MyDirectory> directories, Context ctx){
         folders = directories;
         this.ctx = ctx;
     }
@@ -29,10 +27,10 @@ public class FavLocationAdapter extends RecyclerView.Adapter<FavLocationAdapter.
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         public TextView name;
-        public ImageView img;
+        ImageView img;
 
 
-        public ViewHolder(View v) {
+        ViewHolder(View v) {
             super(v);
             name = v.findViewById(R.id.name);
             img = v.findViewById(R.id.imageView);
@@ -41,7 +39,7 @@ public class FavLocationAdapter extends RecyclerView.Adapter<FavLocationAdapter.
         }
 
 
-        public void bind(final int position){
+        void bind(final int position){
             itemView.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View view) {
@@ -57,12 +55,11 @@ public class FavLocationAdapter extends RecyclerView.Adapter<FavLocationAdapter.
 
     @NonNull
     @Override
-    public FavLocationAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public FavLocationAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fav_location_item, parent, false);
 
-        FavLocationAdapter.ViewHolder viewHolder = new FavLocationAdapter.ViewHolder(view);
-        return viewHolder;
+        return new FavLocationAdapter.ViewHolder(view);
     }
 
     @Override

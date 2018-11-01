@@ -17,7 +17,7 @@ public class ImageAnimator {
     private int imgDefaultX;
     private int imgDefaultY;
     private DataHolder dh;
-    public ImageAnimator(int defX, int defY, DataHolder dh){
+    ImageAnimator(int defX, int defY, DataHolder dh){
         imgDefaultX = defX;
         imgDefaultY = defY;
         this.dh = dh;

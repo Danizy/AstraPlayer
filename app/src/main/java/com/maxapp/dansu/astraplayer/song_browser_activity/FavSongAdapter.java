@@ -1,7 +1,6 @@
 package com.maxapp.dansu.astraplayer.song_browser_activity;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,21 +8,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.maxapp.dansu.astraplayer.MusicService.MusicService;
 import com.maxapp.dansu.astraplayer.R;
-import com.maxapp.dansu.astraplayer.folder_browser.MyDirectory;
 import com.maxapp.dansu.astraplayer.folder_browser.MyFile;
-
 import java.util.List;
 
 public class FavSongAdapter extends RecyclerView.Adapter<FavSongAdapter.ViewHolder> {
     private List<MyFile> folders;
     private Context ctx;
-    private MusicService mService;
     private FavSongListener mListener;
 
-    public FavSongAdapter(List<MyFile> directories, Context ctx, FavSongListener mListener){
+    FavSongAdapter(List<MyFile> directories, Context ctx, FavSongListener mListener){
         folders = directories;
         this.ctx = ctx;
         this.mListener = mListener;
@@ -36,17 +30,17 @@ public class FavSongAdapter extends RecyclerView.Adapter<FavSongAdapter.ViewHold
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         public TextView name;
-        public ImageView img;
+        ImageView img;
 
 
-        public ViewHolder(View v) {
+        ViewHolder(View v) {
             super(v);
             name = v.findViewById(R.id.name);
             img = v.findViewById(R.id.imageView);
         }
 
 
-        public void bind(final int position){
+        void bind(final int position){
             itemView.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View view) {
@@ -60,12 +54,11 @@ public class FavSongAdapter extends RecyclerView.Adapter<FavSongAdapter.ViewHold
 
     @NonNull
     @Override
-    public FavSongAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public FavSongAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fav_location_item, parent, false);
 
-        FavSongAdapter.ViewHolder viewHolder = new FavSongAdapter.ViewHolder(view);
-        return viewHolder;
+        return new FavSongAdapter.ViewHolder(view);
     }
 
     @Override

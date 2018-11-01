@@ -15,10 +15,8 @@ public class MyDirectory {
     public boolean equals(Object o) {
 
         if (o == this) return true;
-
+        if (o == null || getClass() != o.getClass()) return false;
         MyDirectory myDirectory = (MyDirectory) o;
-        boolean a = name.equals(myDirectory.name);
-        boolean b = directory.equals(myDirectory.directory);
         return name.equals(myDirectory.name) &&
                 directory.equals(myDirectory.directory);
     }

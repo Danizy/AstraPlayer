@@ -7,9 +7,7 @@ import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
-
 import com.maxapp.dansu.astraplayer.folder_browser.MyFile;
-
 import java.io.IOException;
 
 public class MusicService extends Service {

@@ -11,33 +11,28 @@ import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.os.IBinder;
+import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.maxapp.dansu.astraplayer.MusicService.DataHolder;
 import com.maxapp.dansu.astraplayer.MusicService.MusicService;
-import com.maxapp.dansu.astraplayer.folder_browser_activity.FolderBrowserActivity;
 import com.maxapp.dansu.astraplayer.song_browser_activity.FavLocations;
 
 public class MainActivity extends Activity {
 
     MusicService mService; //holder of music player
-    boolean mBound = false;
+    boolean mBound = false; //service bound indicator
     DataHolder Dh; //music, folders, current song/folder
-    ConstraintLayout layout;
-    MotionDetector motion;
+    MotionDetector motion; //motion detector
     SeekBar mSeekBar;
     TextView TitleTextVIew;
     TextView FolderTextView;
@@ -48,10 +43,12 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Window window = this.getWindow();
+
         window.addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
         window.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
         window.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
         setContentView(R.layout.activity_main);
+
         startService(new Intent(this, MusicService.class));
         Dh = new DataHolder(this);
         motion = new MotionDetector();
@@ -72,12 +69,6 @@ public class MainActivity extends Activity {
             bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
         }
         else{
-
-
-            //if(getIntent().getIntExtra("song", 9999) != 9999){
-            //    Dh.setFolderAndSong(getIntent().getIntExtra("folder", 0), getIntent().getIntExtra("song", 0));
-            //}
-
             TitleTextVIew.setText(Dh.getSongName());
             FolderTextView.setText(Dh.getFolderName());
         }
@@ -87,10 +78,8 @@ public class MainActivity extends Activity {
 
             @Override
             public void run() {
-                if(mBound){
-                    int mCurrentPosition = mService.getCurrentPosition();
-                    mSeekBar.setProgress(mCurrentPosition);
-                }
+                if(mBound)
+                    mSeekBar.setProgress(mService.getCurrentPosition());
                 mHandler.postDelayed(this, 1000);
             }
         });
@@ -114,7 +103,6 @@ public class MainActivity extends Activity {
                 // TODO Auto-generated method stub
                 if(fromUser)
                     mService.setPosition(progress);
-
             }
         }); //Seekbar control
     }
@@ -132,8 +120,6 @@ public class MainActivity extends Activity {
         savedInstanceState.putInt("currentFolder", Dh.getFolderId());
         savedInstanceState.putInt("currentSong", Dh.getSongId());
 
-        // etc.
-
         super.onSaveInstanceState(savedInstanceState);
     }
 
@@ -148,10 +134,10 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onNewIntent(Intent intent) {
-        // TODO Auto-generated method stub
         super.onNewIntent(intent);
 
         Bundle extras = intent.getExtras();
+        assert extras != null;
         int a = extras.getInt("song", 9999);
         int b = extras.getInt("folder", 9999);
         Dh.setFolderAndSong(b, a);
@@ -168,9 +154,9 @@ public class MainActivity extends Activity {
         if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                showExplanation("Permission Needed", "This app needs permission to read data on your phone", Manifest.permission.READ_EXTERNAL_STORAGE, 1);
+                showExplanation(Manifest.permission.READ_EXTERNAL_STORAGE);
             } else {
-                requestPermission(Manifest.permission.READ_EXTERNAL_STORAGE, 1);
+                requestPermission(Manifest.permission.READ_EXTERNAL_STORAGE);
             }
         } else {
             checkFirstLaunch();
@@ -180,8 +166,8 @@ public class MainActivity extends Activity {
     @Override
     public void onRequestPermissionsResult(
             int requestCode,
-            String permissions[],
-            int[] grantResults) {
+            @NonNull String permissions[],
+            @NonNull int[] grantResults) {
         switch (requestCode) {
             case 1:
                 if (grantResults.length > 0
@@ -194,31 +180,26 @@ public class MainActivity extends Activity {
         }
     }
 
-    private void showExplanation(String title,
-                                 String message,
-                                 final String permission,
-                                 final int permissionRequestCode) {
+    private void showExplanation(final String permission) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(title)
-                .setMessage(message)
+        builder.setTitle("Permission Needed")
+                .setMessage("This app needs permission to read data on your phone")
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        requestPermission(permission, permissionRequestCode);
+                        requestPermission(permission);
                     }
                 });
         builder.create().show();
     }
 
-    private void requestPermission(String permissionName, int permissionRequestCode) {
+    private void requestPermission(String permissionName) {
         ActivityCompat.requestPermissions(this,
-                new String[]{permissionName}, permissionRequestCode);
+                new String[]{permissionName}, 1);
     }
 
 
     ///////////////////////////////////////////////////////////////// CHECK FIRST LAUNCH
     private void checkFirstLaunch(){
-
-
         SharedPreferencesEditor editor = new SharedPreferencesEditor(this);
         boolean test = editor.GetBoolean("firstLaunch");
         if(test){
@@ -246,8 +227,6 @@ public class MainActivity extends Activity {
                 TitleTextVIew.setText(Dh.getSongName());
                 FolderTextView.setText(Dh.getFolderName());
             }
-
-
         }
 
         @Override
@@ -261,34 +240,34 @@ public class MainActivity extends Activity {
     ///////////////////////////////////////////////////////////////// LOAD SAVED DATA
 
     private void loadData(){
-
         Dh.refresh();
-
     }
 
     ///////////////////////////////////////////////////////////////// TOUCH EVENTS
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         String action = motion.move(event);
-        if(action == "left"){
-            NextSong(this.findViewById(R.id.main_content));
-            imageAnimator.animateLeft(this, imgView);
-        }
-        else if(action == "right"){
-            PreviousSong(this.findViewById(R.id.main_content));
-            imageAnimator.animateRight(this, imgView);
-        }
-        else if(action == "down"){
-            PreviousFolder(this.findViewById(R.id.main_content));
-            imageAnimator.animateDown(this, imgView);
-        }
-        else if(action == "up"){
-            NextFolder(this.findViewById(R.id.main_content));
-            imageAnimator.animateUp(this, imgView);
+        switch (action) {
+            case "left":
+                NextSong(this.findViewById(R.id.main_content));
+                imageAnimator.animateLeft(this, imgView);
+                break;
+            case "right":
+                PreviousSong(this.findViewById(R.id.main_content));
+                imageAnimator.animateRight(this, imgView);
+                break;
+            case "down":
+                PreviousFolder(this.findViewById(R.id.main_content));
+                imageAnimator.animateDown(this, imgView);
+                break;
+            case "up":
+                NextFolder(this.findViewById(R.id.main_content));
+                imageAnimator.animateUp(this, imgView);
 
-        }
-        else if(action == "doubleTap"){
-            PlayPause(this.findViewById(R.id.main_content));
+                break;
+            case "doubleTap":
+                PlayPause(this.findViewById(R.id.main_content));
+                break;
         }
 
         imageAnimator.animate(event, imgView);
@@ -303,7 +282,6 @@ public class MainActivity extends Activity {
             else
                 mService.Play();
         }
-
     }
 
     public void NextSong(View v){
@@ -333,14 +311,12 @@ public class MainActivity extends Activity {
     }
 
     public void Browse(View v){
-        //startActivityForResult(new Intent(MainActivity.this, FolderBrowserActivity.class), 1);
         startActivityForResult(new Intent(MainActivity.this, FavLocations.class), 1);
     }
 
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
         if (requestCode == 1) {
             if(resultCode == Activity.RESULT_OK){
                 Dh.refresh();

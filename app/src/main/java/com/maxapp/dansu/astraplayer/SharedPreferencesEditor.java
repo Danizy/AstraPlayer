@@ -1,14 +1,11 @@
 package com.maxapp.dansu.astraplayer;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.maxapp.dansu.astraplayer.folder_browser.MyDirectory;
-
 import java.lang.reflect.Type;
 import java.util.List;
 
@@ -28,7 +25,7 @@ public class SharedPreferencesEditor {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(act);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putBoolean(pref, val);
-        editor.commit();
+        editor.apply();
     }
 
 
@@ -44,7 +41,7 @@ public class SharedPreferencesEditor {
 
         String json = gson.toJson(list);
         editor.putString(tag, json);
-        editor.commit();
+        editor.apply();
     }
 
     public List<String> ReadStringList(String tag){
@@ -52,8 +49,7 @@ public class SharedPreferencesEditor {
         String json = sharedPref.getString(tag, null);
         Gson gson = new Gson();
         Type type = new TypeToken<List<String>>() {}.getType();
-        List<String> list = gson.fromJson(json, type);
-        return list;
+        return gson.fromJson(json, type);
     }
 
     public void WriteDirectories(List<MyDirectory> list, String tag){
@@ -63,7 +59,7 @@ public class SharedPreferencesEditor {
 
         String json = gson.toJson(list);
         editor.putString(tag, json);
-        editor.commit();
+        editor.apply();
     }
 
     public List<MyDirectory> ReadDirectories(String tag){
@@ -71,7 +67,6 @@ public class SharedPreferencesEditor {
         String json = sharedPref.getString(tag, null);
         Gson gson = new Gson();
         Type type = new TypeToken<List<MyDirectory>>() {}.getType();
-        List<MyDirectory> list = gson.fromJson(json, type);
-        return list;
+        return gson.fromJson(json, type);
     }
 }

@@ -1,47 +1,28 @@
 package com.maxapp.dansu.astraplayer.folder_browser_activity;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
-
 import com.maxapp.dansu.astraplayer.R;
 import com.maxapp.dansu.astraplayer.SharedPreferencesEditor;
 import com.maxapp.dansu.astraplayer.folder_browser.FolderBrowser;
 import com.maxapp.dansu.astraplayer.folder_browser.MyDirectory;
-
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link LocalFoldersFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link LocalFoldersFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class LocalFoldersFragment extends Fragment implements DirectoryBrowserAdapter.ListAdapterListener {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
     public List<MyDirectory> localDirectories;
 
     RecyclerView folderRecyclerView;
 
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     private OnFragmentInteractionListener mListener;
 
@@ -49,38 +30,14 @@ public class LocalFoldersFragment extends Fragment implements DirectoryBrowserAd
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment LocalFoldersFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static LocalFoldersFragment newInstance(String param1, String param2) {
-        LocalFoldersFragment fragment = new LocalFoldersFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-
-
-
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View fragmentView = inflater.inflate(R.layout.fragment_local_folders, container, false);
@@ -89,9 +46,9 @@ public class LocalFoldersFragment extends Fragment implements DirectoryBrowserAd
         localDirectories = sp.ReadDirectories("localDirectories");
 
         if(localDirectories == null)
-            localDirectories = new ArrayList<MyDirectory>();
+            localDirectories = new ArrayList<>();
 
-        folderRecyclerView = (RecyclerView) fragmentView.findViewById(R.id.folderRV);
+        folderRecyclerView = fragmentView.findViewById(R.id.folderRV);
 
         LinearLayoutManager recyclerLayoutManager = new LinearLayoutManager(getContext());
         folderRecyclerView.setLayoutManager(recyclerLayoutManager);
@@ -109,13 +66,6 @@ public class LocalFoldersFragment extends Fragment implements DirectoryBrowserAd
 
         return fragmentView;
 
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
     }
 
     @Override
@@ -157,8 +107,6 @@ public class LocalFoldersFragment extends Fragment implements DirectoryBrowserAd
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
 
         void Add(MyDirectory dir, boolean isSd);
         void Del(MyDirectory dir, boolean isSd);

@@ -5,12 +5,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
-
 import com.maxapp.dansu.astraplayer.SharedPreferencesEditor;
 import com.maxapp.dansu.astraplayer.folder_browser.FolderBrowser;
 import com.maxapp.dansu.astraplayer.folder_browser.MyDirectory;
 import com.maxapp.dansu.astraplayer.folder_browser.MyFile;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,8 +24,8 @@ public class DataHolder {
 
     public DataHolder(Activity act){
         this.act = act;
-        directories = new ArrayList<MyDirectory>();
-        files = new ArrayList<MyFile>();
+        directories = new ArrayList<>();
+        files = new ArrayList<>();
         SPEditor = new SharedPreferencesEditor(act);
         Fb = new FolderBrowser(act);
     }
@@ -37,13 +35,13 @@ public class DataHolder {
             directories = SPEditor.ReadDirectories("localDirectories");
         }
         catch (Exception e){
-            directories = new ArrayList<MyDirectory>();
+            directories = new ArrayList<>();
         }
 
         try {
             directories.addAll(SPEditor.ReadDirectories("sdDirectories"));
         }
-        catch (Exception e){
+        catch (Exception ignored){
 
         }
         currentSong = 0;
@@ -59,12 +57,6 @@ public class DataHolder {
         catch (Exception e){
             return null;
         }
-    }
-
-    public MyFile getSong(int id){
-        if(id < 0 || id > files.size() - 1)
-            return files.get(0);
-        return files.get(id);
     }
 
     public MyFile getNextSong(){
